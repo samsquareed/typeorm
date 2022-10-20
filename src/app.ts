@@ -1,11 +1,19 @@
 import express, { Request, Response } from "express";
 import "reflect-metadata"
 import { DataSource } from "typeorm";
-require('dotenv').config()
+import { User } from "./entities/User";
+import dotenv from "dotenv"
+
+//middleware imports
+import userRoute from "./routes/userRoute"
+
+dotenv.config();
 const app = express();
 app.use(express.json())
-
 const PORT = 8080
+
+//middlewares
+app.use("/users", userRoute);
 
 
 app.get("/", (req : Request, res : Response) => {
@@ -14,13 +22,15 @@ app.get("/", (req : Request, res : Response) => {
     })
 })
 
-const AppDataSource = new DataSource({
+export const AppDataSource = new DataSource({
     type: "postgres",
     host: "localhost",
     port: 5432,
     username: process.env.DB_USERNAME || "postgres",
     password: process.env.DB_PASSWORD, 
-    database: process.env.DATABASE
+    database: process.env.DATABASE,
+    entities : [User],
+    synchronize : true,
 })
 
 AppDataSource.initialize().then(()=> {
