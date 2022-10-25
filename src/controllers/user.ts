@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { request } from "http";
-import { getUserFromRepository, saveUserToRepository, updateUserRepository } from "../repository/userRepository";
+import { deleteUserRepository, getUserFromRepository, saveUserToRepository, updateUserRepository } from "../repository/userRepository";
 
 
 export const getUser = async (req : Request, res : Response) => {
@@ -36,6 +36,18 @@ export const updateUser = async (req : Request, res : Response) => {
     } catch (error) {
         res.status(400).json({
             message : "failed to create new user"
+        })
+    } 
+}
+
+
+export const deleteUser = async (req : Request, res : Response) => {
+    try {
+        const deleteUser = await deleteUserRepository(parseInt(req.params.id));
+        deleteUser && res.status(200).json(deleteUser);
+    } catch (error) {
+        res.status(400).json({
+            message : "failed to delete new user"
         })
     } 
 }

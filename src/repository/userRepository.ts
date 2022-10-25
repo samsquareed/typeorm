@@ -46,3 +46,12 @@ export const updateUserRepository = async (id : number, first_name : string, las
     })
     return "user updated successfully!";
 }
+
+
+export const deleteUserRepository = async (id : number) => {
+    const userRepository = AppDataSource.getRepository(User);
+
+    const userDelete = await userRepository.delete(id);
+    console.log(userDelete);
+    return userDelete;
+}
