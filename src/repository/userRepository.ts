@@ -2,6 +2,12 @@ import { AppDataSource } from "../app"
 import { User } from "../entities/User"
 
 
+export const getAllUsersFromRepository = async()=> {
+    const userRepository = AppDataSource.getRepository(User);
+    const users = userRepository.find()
+    return users;
+}
+
 export const getUserFromRepository = (userId : number) => {
     const userRepository = AppDataSource.getRepository(User);
 
