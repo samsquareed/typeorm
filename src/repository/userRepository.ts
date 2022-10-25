@@ -20,3 +20,29 @@ export const saveUserToRepository =  async(first_name : string, last_name : stri
 
     return createdUser;
 }
+
+export const updateUserRepository = async (id : number, first_name : string, last_name : string, email : string) => {
+    const userRepository = AppDataSource.getRepository(User);
+
+    // await userRepository.update(id, {
+    //     firstName: first_name,
+    //     lastName: last_name,
+    //     email : email
+    // })
+
+    await AppDataSource.manager.transaction("SERIALIZABLE",
+        async (transactionalEntityManager)=> {
+        await transactionalEntityManager.update(
+            User,
+            {id},
+            {
+                firstName: first_name,
+                lastName: last_name,
+                email: email
+            }
+        )
+        return "user updated successfully!";
+
+    })
+    return "user updated successfully!";
+}
