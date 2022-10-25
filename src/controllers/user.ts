@@ -1,7 +1,18 @@
 import { Request, Response } from "express";
 import { request } from "http";
-import { deleteUserRepository, getUserFromRepository, saveUserToRepository, updateUserRepository } from "../repository/userRepository";
+import { deleteUserRepository, getAllUsersFromRepository, getUserFromRepository, saveUserToRepository, updateUserRepository } from "../repository/userRepository";
 
+
+export const getUsers = async (req : Request, res : Response)=> {
+    try {
+        const users = await getAllUsersFromRepository()
+        users && res.status(200).json(users)
+    } catch (error) {
+        res.status(404).json({
+            message: "Users not found!"
+        })
+    } 
+}
 
 export const getUser = async (req : Request, res : Response) => {
     try {
